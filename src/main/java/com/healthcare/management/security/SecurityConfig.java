@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/api/appointments/slots", "/api/oauth/google/callback").permitAll()
+                .requestMatchers("/api/auth/**", "/api/appointments/slots", "/api/oauth/google/callback", "/api/doctors", "/error").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

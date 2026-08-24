@@ -67,6 +67,9 @@ public class AppointmentService {
         LocalTime start = LocalTime.parse(profile.getWorkingHoursStart());
         LocalTime end = LocalTime.parse(profile.getWorkingHoursEnd());
         int duration = profile.getSlotDurationMinutes();
+        if (duration <= 0) {
+            throw new IllegalArgumentException("Doctor slot duration must be greater than 0 minutes");
+        }
 
         // 3. Generates base slots
         List<SlotDto> baseSlots = new ArrayList<>();

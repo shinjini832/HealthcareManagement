@@ -32,8 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-# Ignore application.yml containing sensitive keys
-/src/main/resources/application.yml
+
 
 # Frontend Node modules and build output
 /frontend/node_modules/

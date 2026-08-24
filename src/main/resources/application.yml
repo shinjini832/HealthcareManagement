@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: management
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/healthcare_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:Frustated@1920}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+  mail:
+    host: ${SPRING_MAIL_HOST:localhost}
+    port: ${SPRING_MAIL_PORT:25}
+    username: ${SPRING_MAIL_USERNAME:}
+    password: ${SPRING_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+google:
+  client-id: ${GOOGLE_CLIENT_ID:mock-client-id}
+  client-secret: ${GOOGLE_CLIENT_SECRET:mock-client-secret}
+  redirect-uri: ${GOOGLE_REDIRECT_URI:http://localhost:8080/api/oauth/google/callback}
+
+llm:
+  api-key: ${LLM_API_KEY:mock-key}
+  api-url: ${LLM_API_URL:https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent}

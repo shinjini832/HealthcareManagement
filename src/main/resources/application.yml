@@ -6,13 +6,6 @@ spring:
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:Frustated@1920}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    hikari:
-      connection-test-query: SELECT 1
-      keepalive-time: 30000        # Send keepalive every 30s to prevent TiDB from closing idle connections
-      connection-timeout: 20000    # Wait up to 20s for a connection from the pool
-      idle-timeout: 600000         # Remove connections idle for 10 minutes
-      max-lifetime: 1800000        # Retire connections after 30 minutes
-      maximum-pool-size: 5         # Limit pool size (TiDB free tier has connection limits)
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:

@@ -1,7 +1,9 @@
 package com.healthcare.management.repository;
 
 import com.healthcare.management.model.SlotHold;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -18,11 +20,8 @@ public interface SlotHoldRepository extends JpaRepository<SlotHold, Long> {
             LocalDateTime now
     );
 
-    // Native query used instead of @Lock(PESSIMISTIC_WRITE) because Hibernate 7
-    // generates "FOR UPDATE OF alias" syntax which is not supported by TiDB/MySQL.
-    // Standard "FOR UPDATE" achieves the same row-level pessimistic lock.
-    @Query(value = "SELECT * FROM slot_holds WHERE doctor_id = :doctorId AND slot_date = :slotDate AND start_time = :startTime AND expires_at > :now FOR UPDATE",
-           nativeQuery = true)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT s FROM SlotHold s WHERE s.doctor.id = :doctorId AND s.slotDate = :slotDate AND s.startTime = :startTime AND s.expiresAt > :now")
     List<SlotHold> findActiveHoldsForUpdate(
             @Param("doctorId") Long doctorId,
             @Param("slotDate") LocalDate slotDate,

@@ -774,7 +774,7 @@ function App() {
                           className="form-input" 
                           value={bookingDate}
                           onChange={(e) => { setBookingDate(e.target.value); fetchSlots(selectedDoctor.id, e.target.value); }}
-                          min={new Date().toISOString().split('T')[0]}
+                          min={(() => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; })()}
                         />
                       </div>
 
@@ -783,15 +783,18 @@ function App() {
                           <h4 style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-medium)', marginBottom: '0.75rem' }}>Available Time Slots:</h4>
                           {availableSlots.length === 0 ? (
                             <p style={{ fontSize: '0.9rem', color: 'var(--text-light)' }}>No slots available on this date. Select another date or doctor.</p>
+                          ) : availableSlots.every(s => !s.available) ? (
+                            <p style={{ fontSize: '0.9rem', color: 'var(--text-light)' }}>All slots are fully booked or have passed for this date. Please select another date.</p>
                           ) : (
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '0.75rem' }}>
                               {availableSlots.map((slot, idx) => (
                                 <button 
                                   key={idx} 
                                   className={`btn ${selectedSlot?.startTime === slot.startTime ? 'btn-primary' : 'btn-outline'}`}
-                                  style={{ padding: '0.5rem', fontSize: '0.8rem' }}
+                                  style={{ padding: '0.5rem', fontSize: '0.8rem', opacity: slot.available ? 1 : 0.35, cursor: slot.available ? 'pointer' : 'not-allowed' }}
                                   disabled={!slot.available}
                                   onClick={() => handleHoldSlot(slot)}
+                                  title={slot.available ? '' : 'This slot is already booked or has passed'}
                                 >
                                   {slot.startTime}
                                 </button>

@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -93,8 +94,9 @@ public class AppointmentService {
                 .findByDoctorIdAndSlotDateAndExpiresAtAfter(doctorId, date, LocalDateTime.now());
 
         // 5. Cross-reference availability
-        LocalTime nowTime = LocalTime.now();
-        LocalDate today = LocalDate.now();
+        ZoneId ist = ZoneId.of("Asia/Kolkata");
+        LocalTime nowTime = LocalTime.now(ist);
+        LocalDate today = LocalDate.now(ist);
 
         for (SlotDto slot : baseSlots) {
             LocalTime slotStart = slot.getStartTime();

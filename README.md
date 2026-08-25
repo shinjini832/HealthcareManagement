@@ -102,9 +102,16 @@ Create a `.env` file locally or define these in your cloud provider environment 
 
 ```env
 # Database Configuration
+# Local setup (default):
 SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/healthcare_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC
 SPRING_DATASOURCE_USERNAME=root
 SPRING_DATASOURCE_PASSWORD=your_mysql_password
+
+# For Aiven MySQL (Cloud Database):
+# Replace host, port (e.g. 12345), database, username, and password with details from Aiven dashboard.
+# SPRING_DATASOURCE_URL=jdbc:mysql://<your-aiven-host>:<your-aiven-port>/<your-database-name>?useSSL=true&trustServerCertificate=true
+# SPRING_DATASOURCE_USERNAME=avnadmin
+# SPRING_DATASOURCE_PASSWORD=your_aiven_password
 
 # JWT Security
 JWT_SECRET_KEY=your_base64_encoded_jwt_secret_key_minimum_256_bits

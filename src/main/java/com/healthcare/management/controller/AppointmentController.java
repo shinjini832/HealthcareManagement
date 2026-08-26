@@ -24,9 +24,12 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController
 @RequestMapping("/api/appointments")
 @RequiredArgsConstructor
+@Slf4j
 public class AppointmentController {
 
     private final AppointmentService appointmentService;
@@ -40,8 +43,10 @@ public class AppointmentController {
             List<SlotDto> slots = appointmentService.getAvailableSlots(doctorId, date);
             return ResponseEntity.ok(slots);
         } catch (IllegalArgumentException e) {
+            log.warn("Invalid slot request: {}", e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
+            log.error("Failed to fetch slots for doctorId: {} on date: {}", doctorId, date, e);
             return ResponseEntity.internalServerError().body("An error occurred: " + e.getMessage());
         }
     }

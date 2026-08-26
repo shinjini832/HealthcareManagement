@@ -66,8 +66,8 @@ public class AppointmentService {
         DoctorProfile profile = doctorProfileRepository.findById(doctorId)
                 .orElseThrow(() -> new IllegalArgumentException("Doctor profile not found with ID: " + doctorId));
 
-        LocalTime start = LocalTime.parse(profile.getWorkingHoursStart());
-        LocalTime end = LocalTime.parse(profile.getWorkingHoursEnd());
+        LocalTime start = parseLocalTime(profile.getWorkingHoursStart(), LocalTime.of(9, 0));
+        LocalTime end = parseLocalTime(profile.getWorkingHoursEnd(), LocalTime.of(17, 0));
         int duration = profile.getSlotDurationMinutes();
         if (duration <= 0) {
             throw new IllegalArgumentException("Doctor slot duration must be greater than 0 minutes");
@@ -157,8 +157,8 @@ public class AppointmentService {
         }
 
         // Verify slot falls within working hours
-        LocalTime workingStart = LocalTime.parse(doctor.getWorkingHoursStart());
-        LocalTime workingEnd = LocalTime.parse(doctor.getWorkingHoursEnd());
+        LocalTime workingStart = parseLocalTime(doctor.getWorkingHoursStart(), LocalTime.of(9, 0));
+        LocalTime workingEnd = parseLocalTime(doctor.getWorkingHoursEnd(), LocalTime.of(17, 0));
         if (startTime.isBefore(workingStart) || endTime.isAfter(workingEnd)) {
             throw new IllegalArgumentException("Slot time falls outside the doctor's working hours");
         }
@@ -482,5 +482,21 @@ public class AppointmentService {
                 .postVisitSummary(app.getPostVisitSummary())
                 .prescriptions(prescriptions)
                 .build();
+    }
+
+    private LocalTime parseLocalTime(String timeStr, LocalTime fallback) {
+        if (timeStr == null || timeStr.trim().isEmpty()) {
+            return fallback;
+        }
+        String trimmed = timeStr.trim();
+        try {
+            return LocalTime.parse(trimmed);
+        } catch (Exception e) {
+            try {
+                return LocalTime.parse(trimmed, java.time.format.DateTimeFormatter.ofPattern("H:mm[:ss]"));
+            } catch (Exception ex) {
+                return fallback;
+            }
+        }
     }
 }

@@ -10,7 +10,8 @@ spring:
       connection-test-query: SELECT 1
       keepalive-time: 30000
       max-lifetime: 1800000
-      maximum-pool-size: 5
+      minimum-idle: 1          # Don't eagerly open all connections on startup
+      maximum-pool-size: 2     # Clever Cloud free tier = 5 max total; reserve 3 for DDL + scheduler + buffer
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQLDialect

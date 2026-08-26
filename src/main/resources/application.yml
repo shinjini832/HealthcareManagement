@@ -12,6 +12,7 @@ spring:
       max-lifetime: 1800000
       maximum-pool-size: 5
   jpa:
+    open-in-view: false
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update

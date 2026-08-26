@@ -12,7 +12,7 @@ spring:
       max-lifetime: 1800000
       minimum-idle: 1          # Start with 1 connection, grow as needed
       maximum-pool-size: 4     # After startup DDL releases its connection, 4 fits within Clever Cloud's limit of 5
-      connection-timeout: 5000 # Fail fast (5s) instead of hanging for 30s if pool is exhausted
+      connection-timeout: 10000 # 10s timeout - gives slow Clever Cloud connections time to respond
   jpa:
     open-in-view: false
     database-platform: org.hibernate.dialect.MySQLDialect
